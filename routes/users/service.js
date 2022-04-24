@@ -1,4 +1,5 @@
-const { USER_MODEL } = require('../../models')
+const { USER_MODEL } = require('../../models');
+const { hashPassword, generarteToken , comparewPassword} = require('../../helpers/user');
 
 module.exports = {
     CREATE: async ({ body }) => {
@@ -6,14 +7,50 @@ module.exports = {
 
             const reqData = body;
 
-            const user = await USER_MODEL.findOne({ name: reqData.name });
+            if (reqData.password) {
+              reqData.password = await hashPassword(reqData.password);
+            }
+              const user = await USER_MODEL.findOne({ email: reqData.email });
 
             if (!user) {
                 const data = await USER_MODEL.create(reqData);
-                return { type: 'success', message: `${data.name.toUpperCase()} is created successfully`, data }
+                return { type: 'success', message: `Account created successfully`, data }
             }
 
-            return { type: 'bad', message: `${reqData.name} already exist!` }
+            return { type: 'bad', message: `email already exist!` }
+
+        } catch (error) {
+            return { type: 'Exception', message: error }
+        }
+    },
+    LOGIN: async ({ body }) => {
+        try {
+
+            const reqData = body;
+            const user = await USER_MODEL.findOne({ email: reqData.email });
+            
+            
+            if (!user) {
+              return { type: 'bad', message: `Invalid email or password!` };
+            }
+            
+          
+            const isPaswordCompared = await comparewPassword(reqData.password, user.password);
+
+            if (!isPaswordCompared) {
+              return { type: 'bad', message: `Invalid email or password!` };
+            }
+                        
+            user.password = undefined;
+            const account = JSON.parse(JSON.stringify(user))
+
+            return {
+              type: 'success',
+              message: `Account created successfully`,
+              data: { ...account, access_token: generarteToken(user) },
+            };
+
+            
 
         } catch (error) {
             return { type: 'Exception', message: error }
