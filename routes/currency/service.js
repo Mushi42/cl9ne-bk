@@ -1,76 +1,65 @@
-const { CURRENCY } = require('../../models');
+const { CURRENCY_MODEL } = require('../../models');
 
 module.exports = {
-    CREATE: async ({ body }) => {
-        try {
-
-            const reqData = body;
-            const data = await CURRENCY.create(reqData);
-            return { type: 'success', message: `Account created successfully`, data }
-
-        } catch (error) {
-            return { type: 'Exception', message: error }
-        }
+  CREATE: async ({ body }) => {
+    try {
+      const reqData = body;
+      const data = await CURRENCY_MODEL.create(reqData);
+      return { type: 'success', message: `Account created successfully`, data };
+    } catch (error) {
+      throw error;
     }
-    , FIND_ALL: async () => {
-        try {
-
-            const currency = await CURRENCY.find({})
-
-            if (currency.length >= 1)
-                return { type: 'success', message: `currency found`, data: currency }
-
-            return { type: 'bad', message: `No Data Available` }
-
-        } catch (error) {
-            return { type: 'Exception', message: error }
-        }
+  },
+  FIND_ALL: async () => {
+    try {
+      const currency = await CURRENCY_MODEL.find({});
+      return { type: 'success', message: `currency found`, data: currency };
+    } catch (error) {
+      throw error;
     }
+  },
 
-    , FIND_ONE: async ({ params }) => {
-        try {
+  FIND_ONE: async ({ params }) => {
+    try {
+      const { id } = params;
+      const currency = await CURRENCY_MODEL.findOne({ _id: id });
 
-            const { id } = params
-            const currency = await CURRENCY.findOne({ _id: id })
+      if (currency)
+        return { type: 'success', message: `currency found`, data: currency };
 
-            if (currency)
-                return { type: 'success', message: `currency found`, data: currency }
-
-            return { type: 'bad', message: `No Data Available` }
-
-        } catch (error) {
-            return { type: 'Exception', message: error }
-        }
+      return { type: 'bad', message: `No Data Available` };
+    } catch (error) {
+      throw error;
     }
+  },
 
-    , UPDATE_BY_ID: async ({ params, body }) => {
-        try {
+  UPDATE_BY_ID: async ({ params, body }) => {
+    try {
+      const { id } = params;
+      const currency = await CURRENCY_MODEL.findOneAndUpdate({ _id: id }, body, {
+        new: true,
+      });
 
-            const { id } = params
-            const currency = await CURRENCY.findOneAndUpdate({ _id: id }, body, { new: true })
+      if (currency)
+        return { type: 'success', message: `currency update`, data: currency };
 
-            if (currency)
-                return { type: 'success', message: `currency update`, data: currency }
-
-            return { type: 'bad', message: `No Data Available` }
-
-        } catch (error) {
-            return { type: 'Exception', message: error }
-        }
+      return { type: 'bad', message: `No Data Available` };
+    } catch (error) {
+      throw error;
     }
+  },
 
-    , DELETE_BY_ID: async ({ params }) => {
-        try {
-            const { id } = params
-            const currency = await CURRENCY.findByIdAndDelete({ _id: id })
+  DELETE_BY_ID: async ({ params }) => {
+    try {
+      const { id } = params;
+      const currency = await CURRENCY_MODEL.findByIdAndDelete({ _id: id });
 
-            if (currency)
-                return { type: 'success', message: `currency deleted`, data: currency }
+      if (currency)
+        return { type: 'success', message: `currency deleted`, data: currency };
 
-            return { type: 'bad', message: `No Data Available` }
-
-        } catch (error) {
-            return { type: 'Exception', message: error }
-        }
+      return { type: 'bad', message: `No Data Available` };
+    } catch (error) {
+      throw error;
     }
-}
+  },
+};
