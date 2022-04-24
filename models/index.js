@@ -1,5 +1,5 @@
 module.exports = {
     USER_MODEL: require('./users.model'),
     TRANSACTION_MODEL: require('./transaction.model'),
-    CURRENCY_MODEL: require('./currConvert.model'),
+    CURRENCY_MODEL: require('./currency.model'),
 }
