@@ -9,6 +9,7 @@ require('dotenv').config()
 require('./config/database')
 
 var usersRouter = require('./routes/users');
+var transactionsRouter = require('./routes/transaction');
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
+app.use('/transactions', transactionsRouter);
 
 app.use('/', (req, res) => {
   res.send('Welcome to Disney Land😎😎')
