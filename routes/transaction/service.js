@@ -6,6 +6,7 @@ module.exports = {
 
             const reqData = body;
             const data = await TRANSACTION_MODEL.create(reqData);
+            console.log('Created', data)
             return { type: 'success', message: `Account created successfully`, data }
 
         } catch (error) {
