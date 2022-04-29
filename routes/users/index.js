@@ -9,14 +9,15 @@ router.post('/', async (req, res) => {
     res.send(response)
 
   } catch (error) {
-    return res.status(500).json({ type: 'Exception', message: error })
+    setResponse(res, { type: 'Error', data: error.stack });
   }
 }).post('/login', async (req, res) => {
   try {
+
     const response = await LOGIN(req);
     setResponse(res, response);
   } catch (error) {
-    return res.status(500).json({ type: 'Exception', message: error })
+    setResponse(res, { type: 'Error', data: error.stack });
   }
 })
 .get('/', async (req, res) => {
@@ -27,7 +28,7 @@ router.post('/', async (req, res) => {
     res.send(users)
 
   } catch (error) {
-    return res.status(500).json({ type: 'Exception', message: error })
+    setResponse(res, { type: 'Error', data: error.stack });
   }
 }).get('/:id', async (req, res) => {
   try {
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
     res.send(response)
 
   } catch (error) {
-    return res.status(500).json({ type: 'Exception', message: error })
+    setResponse(res, { type: 'Error', data: error.stack });
   }
 }).put('/:id', async (req, res) => {
 
@@ -45,7 +46,7 @@ router.post('/', async (req, res) => {
     res.send(response)
 
   } catch (error) {
-    return res.status(500).json({ type: 'Exception', message: error })
+    setResponse(res, { type: 'Error', data: error.stack });
   }
 }).delete('/:id', async (req, res) => {
 
@@ -55,7 +56,7 @@ router.post('/', async (req, res) => {
     res.send(response)
 
   } catch (error) {
-    return res.status(500).json({ type: 'Exception', message: error })
+    setResponse(res, { type: 'Error', data: error.stack });
   }
 })
 
