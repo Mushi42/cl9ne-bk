@@ -1,4 +1,8 @@
-const { USER_MODEL } = require('../../models');
+const {
+  USER_MODEL,
+  TRANSACTION_MODEL,
+  CONTACT_MODEL,
+} = require('../../models');
 const {
   hashPassword,
   generarteToken,
@@ -68,6 +72,35 @@ module.exports = {
         return { type: 'success', message: `users found`, data: users };
 
       return { type: 'bad', message: `No Data Available` };
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  DASHBOARD: async () => {
+    try {
+      const [
+        usersCount,
+        pendingItemsCount,
+        approvedItemsCount,
+        supportCount,
+      ] = await Promise.all([
+        USER_MODEL.find({}).count(),
+        TRANSACTION_MODEL.find({ status: 'pending' }).count(),
+        TRANSACTION_MODEL.find({ status: 'approved' }).count(),
+        CONTACT_MODEL.find({}).count(),
+      ]);
+
+      return {
+        type: 'success',
+        message: `dashbord`,
+        data: {
+          usersCount,
+          pendingItemsCount,
+          approvedItemsCount,
+          supportCount,
+        },
+      };
     } catch (error) {
       throw error;
     }
