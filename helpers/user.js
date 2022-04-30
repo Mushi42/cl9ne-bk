@@ -10,14 +10,7 @@ const hashPassword = (password) =>
     }
   });
 
-const comparewPassword = (clientPass, dbPass) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      resolve(await bcrypt.compareSync(clientPass, dbPass));
-    } catch (error) {
-      reject(error);
-    }
-  });
+const comparewPassword = (clientPass, dbPass) => bcrypt.compareSync(clientPass, dbPass);
 
 const formateData = (data) => {
   data.dob = new Date(data.dob);
