@@ -11,7 +11,7 @@ var router = express.Router();
 router
   .post('/', async (req, res) => {
     try {
-      console.log('=-=-=-',req.body)
+      console.log('=-=-=-',req.body)  
       const response = await CREATE(req);
       setResponse(res, response);
     } catch (error) {

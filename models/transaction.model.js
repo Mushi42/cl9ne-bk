@@ -9,8 +9,10 @@ const transactionSchema = new mongoose.Schema({
     receiver: {
         name: String,
         phone: String,
+        bank: String,
         country: String,
-        accNumber: String,
+        serviceProvider: String,
+        receiverNumber: String,
         IBAN: String,
         amount: String
     },

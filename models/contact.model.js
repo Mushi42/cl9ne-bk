@@ -1,14 +1,5 @@
 const mongoose = require('mongoose');
 
-/*
-name
-email 
-message
-phone
-subject
-
-*/ 
-
 const schema = new mongoose.Schema({
   name: {
     type: String,

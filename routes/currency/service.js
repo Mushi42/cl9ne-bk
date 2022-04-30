@@ -12,6 +12,7 @@ module.exports = {
   },
   FIND_ALL: async () => {
     try {
+      console.log('find all api call')
       const currency = await CURRENCY_MODEL.find({});
       return { type: 'success', message: `currency found`, data: currency };
     } catch (error) {

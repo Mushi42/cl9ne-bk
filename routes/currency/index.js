@@ -12,43 +12,41 @@ router.post('/', async (req, res) => {
     return res.status(500).json({ type: 'Exception', message: error })
   }
 }).get('/', async (req, res) => {
+  try {
+    const users = await FIND_ALL()
+    res.send(users)
 
-    try {
+  } catch (error) {
+    return res.status(500).json({ type: 'Exception', message: error })
+  }
+}).get('/:id', async (req, res) => {
+  try {
+    const response = await FIND_ONE(req)
+    setResponse(res, response)
 
-      const users = await FIND_ALL()
-      res.send(users)
+  } catch (error) {
+    return res.status(500).json({ type: 'Exception', message: error })
+  }
+}).put('/:id', async (req, res) => {
 
-    } catch (error) {
-      return res.status(500).json({ type: 'Exception', message: error })
-    }
-  }).get('/:id', async (req, res) => {
-    try {
-      const response = await FIND_ONE(req)
-      setResponse(res, response)
+  try {
 
-    } catch (error) {
-      return res.status(500).json({ type: 'Exception', message: error })
-    }
-  }).put('/:id', async (req, res) => {
+    const response = await UPDATE_BY_ID(req)
+    setResponse(res, response)
 
-    try {
+  } catch (error) {
+    return res.status(500).json({ type: 'Exception', message: error })
+  }
+}).delete('/:id', async (req, res) => {
 
-      const response = await UPDATE_BY_ID(req)
-      setResponse(res, response)
+  try {
 
-    } catch (error) {
-      return res.status(500).json({ type: 'Exception', message: error })
-    }
-  }).delete('/:id', async (req, res) => {
+    const response = await DELETE_BY_ID(req)
+    setResponse(res, response)
 
-    try {
-
-      const response = await DELETE_BY_ID(req)
-      setResponse(res, response)
-
-    } catch (error) {
-      return res.status(500).json({ type: 'Exception', message: error })
-    }
-  })
+  } catch (error) {
+    return res.status(500).json({ type: 'Exception', message: error })
+  }
+})
 
 module.exports = router;
