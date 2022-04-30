@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 
   try {
 
-    const response = await FIND_ALL()
+    const response = await FIND_ALL(req)
     setResponse(res, response)
 
   } catch (error) {
