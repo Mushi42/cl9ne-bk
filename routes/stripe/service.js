@@ -10,6 +10,10 @@ module.exports = {
     try {
       const { token } = body;
 
+      console.log('----token', body);
+
+
+      return { type: 'success', message: `email already exist!`, data: {} };
       const charge = await stripe.charges.create({
         amount: 999 * 1000,
         currency: 'usd',
