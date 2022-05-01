@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var contactRouter = require('./routes/contact');
 var transactionsRouter = require('./routes/transaction');
 var currencyRouter = require('./routes/currency');
+var stripeRouter = require('./routes/stripe');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use('/users', usersRouter);
 app.use('/contact', contactRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/currency', currencyRouter);
+app.use('/stripe', stripeRouter);
 
 app.use('/', (req, res) => {
   res.send('Welcome to Disney Land😎😎')
