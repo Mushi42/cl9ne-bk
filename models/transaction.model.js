@@ -19,6 +19,8 @@ const transactionSchema = new mongoose.Schema({
     enum: ['bank', 'mobile'],
   },
   amount: Number,
+  convertedAmount: Number,
+  currency: String,
   status: {
     type: String,
     enum: ['pending', 'approved'],
