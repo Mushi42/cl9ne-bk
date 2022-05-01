@@ -24,6 +24,9 @@ module.exports = {
   FIND_ONE: async ({ params }) => {
     try {
       const { id } = params;
+      if (id && id.length) {
+        return { type: 'bad', message: `Please provide valid #Transaction_number` };
+      }
       const transaction = await TRANSACTION_MODEL.findOne({ _id: id });
 
       if (transaction)

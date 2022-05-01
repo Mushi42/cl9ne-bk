@@ -13,10 +13,10 @@ const amountConverstion = (currency, amount) => {
        stripeAmount = amount * 100;
       return { stripeCurrency: 'usd', stripeAmount };
     case 'EUR':
-       stripeAmount = amount ;
+       stripeAmount = amount * 100;
       return { stripeCurrency: 'eur', stripeAmount };
     case 'GBP':
-       stripeAmount = amount ;
+       stripeAmount = amount * 100;
       return { stripeCurrency: 'gbp', stripeAmount };
     default:
       return false;
@@ -27,12 +27,7 @@ module.exports = {
   CHARGE: async ({ body }) => {
     try {
       const { token, transaction } = body;
-
-      console.log('----token', body);
-      const convertedData = amountConverstion('EUR', 100);
-      // const convertedData = amountConverstion(transaction.currency, transaction.amount);
-      console.log('----convertedData', convertedData);
-
+      const convertedData = amountConverstion(transaction.currency, transaction.amount);
       if (!convertedData) {
         return { type: 'bad', message: `Please select valid currency`, data: {} };
       }
@@ -43,16 +38,17 @@ module.exports = {
         description: 'Example charge',
         source: token,
       };
-      console.log('----chargPayload', chargPayload);
-      
-      // return { type: 'success', message: `email already exist!`, data: {} };
       
       const charge = await stripe.charges.create(chargPayload);
-      console.log('----charge.status', charge.status);
       
       if (charge.status === 'succeeded') {
-        await TRANSACTION_MODEL.create(transaction);
-        return { type: 'success', message: `transaction succeeded`, data: {} };
+        transaction.stripeTransactionId = charge.id;
+        const trsactionCreated = await TRANSACTION_MODEL.create(transaction);
+        return {
+          type: 'success',
+          message: `transaction succeeded`,
+          data: trsactionCreated,
+        };
       } else {
         return { type: 'bad', message: `transaction failed!`, data: {} };
       }

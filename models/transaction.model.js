@@ -21,6 +21,7 @@ const transactionSchema = new mongoose.Schema({
   amount: Number,
   convertedAmount: Number,
   currency: String,
+  stripeTransactionId: String,
   status: {
     type: String,
     enum: ['pending', 'approved'],
