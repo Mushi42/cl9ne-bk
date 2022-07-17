@@ -13,21 +13,26 @@ var fs = require('fs')
  * Get port from environment and store in Express.
  */
 
-var port = '443';
-// var port = '11000';
+var port = process.env.PORT || '443';
 var ip = process.env.HOST || 'localhost'
+var environment = process.env.ENVIRONMENT || 'prodution'
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 const options = {
-  cert: fs.readFileSync('/home/project/eber.crt'),
-  key: fs.readFileSync('/home/project/key.pem')
+cert: fs.readFileSync('/home/project/cl9nepay_com.crt'),
+key: fs.readFileSync('/home/project/abc.pem')
 }
-// options
-var server = https.createServer(options, app)
-// var server = http.createServer(app);
+var server;
+if (environment === 'prodution') {
+  server = https.createServer(options, app)
+} else  {
+  server = http.createServer(app);
+}
+
+
 
 /**
  * Listen on provided port, on all network interfaces.
